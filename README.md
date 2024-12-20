@@ -1,172 +1,132 @@
-# Phase 3 CLI+ORM Project Template
+# Recipe Manager CLI App
 
-## Learning Goals
+Welcome to the **Recipe Manager CLI App**! This is a command-line tool to help you manage and organize recipes, ingredients, and their relationships in a simple way. The app uses an SQLite database (`company.db`) to store and retrieve your data.
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+## Features
 
----
+- **Manage Recipes**: Add, list, and delete recipes.
+- **Manage Ingredients**: Add, list, and delete ingredients.
+- **Manage Recipe Ingredients**: Link ingredients to recipes and remove them as needed.
 
-## Introduction
+## Requirements
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+- **Python 3.x** installed on your system.
+- **SQLite3** (Python’s built-in library for SQLite).
 
-Take a look at the directory structure:
+## Installation
 
-```console
-.
-├── Pipfile
-├── Pipfile.lock
-├── README.md
-└── lib
-    ├── models
-    │   ├── __init__.py
-    │   └── model_1.py
-    ├── cli.py
-    ├── debug.py
-    └── helpers.py
-```
+### Step 1: Clone or Download the Repository
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
+Clone the repository using Git:
 
----
+```bash
+git clone https://github.com/Stephanieest/python-p3-recipe-cli.git
+cd python-p3-recipe-cli
 
-## Generating Your Environment
+Step 2: Set Up the Database
+Before running the app, ensure that the required tables in the SQLite database are created. Run the following script to set up the tables:
 
-You might have noticed in the file structure- there's already a Pipfile!
+python
+Copy code
+from models.recipe import Recipe
+from models.ingredient import Ingredient
+from models.recipe_ingredient import RecipeIngredient
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+Recipe.create_table()
+Ingredient.create_table()
+RecipeIngredient.create_table()
+This will create the necessary tables (recipes, ingredients, recipe_ingredients) in the company.db file.
 
-```console
-pipenv install
-pipenv shell
-```
+Step 3: Run the App
+To run the app, execute the cli.py script:
 
----
+bash
+Copy code
+python main.py
+Usage
+Once you run the app, you’ll be presented with a main menu where you can choose what to do:
 
-## Generating Your CLI
+Main Menu
+markdown
+Copy code
+Please select an option:
+0. Exit
+1. Manage Recipes
+2. Manage Ingredients
+3. Manage Recipe Ingredients
+Manage Recipes
+Add Recipe
+Enter a recipe name, description, and instructions.
 
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
+Example input:
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+Enter recipe name: Pasta
+Enter recipe description: A simple pasta recipe
+Enter recipe instructions: Boil water, cook pasta, add sauce
+List All Recipes
+View all saved recipes with their names, descriptions, and instructions.
 
-```py
-# lib/cli.py
+Delete Recipe
+Delete a recipe by entering its ID.
 
-from helpers import (
-    exit_program,
-    helper_1
-)
+Example input:
+
+Enter the recipe ID to delete: 1
+Manage Ingredients
+Add Ingredient
+Enter the name and quantity of an ingredient.
+
+Example input:
+
+Enter ingredient name: Tomato
+Enter ingredient quantity: 2
+List All Ingredients
+View all saved ingredients with their names and quantities.
+
+Delete Ingredient
+Delete an ingredient by entering its ID.
+
+Example input:
+
+Enter the ingredient ID to delete: 1
+Manage Recipe Ingredients
+Add Recipe Ingredient
+Link an ingredient to a recipe by entering both the recipe ID and ingredient ID.
+
+Example input:
+
+Enter recipe ID: 1
+Enter ingredient ID: 1
+List All Recipe Ingredients
+View the links between recipes and their ingredients.
+
+Delete Recipe Ingredient
+Remove a recipe-ingredient link by entering its ID.
+
+Example input:
+
+Enter recipe ingredient ID to delete: 1
+File Structure
+
+python-p3-recipe-cli/
+│
+├── models/
+│   ├── recipe.py             # Recipe class for managing recipes
+│   ├── ingredient.py         # Ingredient class for managing ingredients
+│   └── recipe_ingredient.py  # RecipeIngredient class for managing recipe-ingredient links
+│
+├── main.py                   # Main script to run the CLI app
+├── company.db                # SQLite database where recipes, ingredients, and links are stored
+└── requirements.txt          # (Optional) File with dependencies (if applicable)
 
 
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
+License
+This project is open-source and available under the MIT License.
 
-
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-The helper functions are located in `lib/helpers.py`:
-
-```py
-# lib/helpers.py
-
-def helper_1():
-    print("Performing useful function#1.")
-
-
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
-
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
-
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
-
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
-
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
-
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
-
-- User interface
-- Data persistence
-- Problem domain rules and logic
-
----
-
-## Updating README.md
-
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
-
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
-
-### What Goes into a README?
-
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
-
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
-
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+Happy Cooking! 🍳
+yaml
+Copy code
 
 ---
 
-## Conclusion
 
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
-
-Happy coding!
-
----
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
