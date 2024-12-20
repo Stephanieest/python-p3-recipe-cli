@@ -3,6 +3,10 @@ from models.recipe import Recipe
 from models.ingredient import Ingredient
 from models.recipe_ingredient import RecipeIngredient
 
+Recipe.create_table()
+Ingredient.create_table()
+RecipeIngredient.create_table()
+
 
 def main():
     while True:
